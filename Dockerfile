@@ -1,4 +1,7 @@
 FROM node:22-alpine AS builder
+ARG REPO
+ENV REPO=${REPO}
+RUN echo $REPO
 WORKDIR /app
 COPY package*.json .
 RUN npm install
