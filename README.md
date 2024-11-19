@@ -14,6 +14,7 @@ A Dockerfile test to wrap and deploy SvelteKit apps.
 FROM node:22-alpine AS builder
 WORKDIR /app
 COPY package*.json .
+# npm install
 RUN npm ci
 COPY . .
 RUN npm run build
