@@ -2,6 +2,7 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY package*.json .
 RUN npm install
+RUN git clone ${{ secrets.CONTENT_REPO }} vault
 COPY . .
 RUN npm run build
 RUN npm prune --production
