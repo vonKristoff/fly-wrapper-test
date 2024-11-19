@@ -2,6 +2,7 @@ FROM node:22-alpine AS builder
 ARG REPO
 ENV REPO=${REPO}
 RUN echo $REPO
+RUN apk add --no-cache git
 WORKDIR /app
 COPY package*.json .
 RUN npm install
