@@ -10,6 +10,8 @@ COPY package*.json .
 RUN mkdir vault
 RUN npm install
 RUN git clone $REPO raw
+RUN echo raw
+RUN echo "$PWD"
 COPY raw/content vault
 COPY . .
 RUN npm run build
