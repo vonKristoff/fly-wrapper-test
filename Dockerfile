@@ -2,11 +2,15 @@ FROM node:22-alpine AS builder
 ARG REPO
 ENV REPO=${REPO}
 RUN echo $REPO
-RUN apk add --no-cache git
+RUN apk add git
+
 WORKDIR /app
+
 COPY package*.json .
+RUN mkdir vault
 RUN npm install
-RUN git clone $REPO vault
+RUN git clone $REPO raw
+COPY raw/content vault
 COPY . .
 RUN npm run build
 RUN npm prune --production
