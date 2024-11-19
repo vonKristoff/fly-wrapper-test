@@ -5,7 +5,7 @@ RUN echo $REPO
 WORKDIR /app
 COPY package*.json .
 RUN npm install
-RUN git clone ${REPO} vault
+RUN git clone $REPO vault
 COPY . .
 RUN npm run build
 RUN npm prune --production
