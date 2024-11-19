@@ -1,21 +1,16 @@
-FROM node:lts-slim as build
-
+FROM node:22-alpine AS builder
 WORKDIR /app
-
-COPY package*.json ./
-RUN rm -rf node_modules
-RUN rm -rf build
+COPY package*.json .
+RUN npm ci
 COPY . .
-RUN npm install
 RUN npm run build
+RUN npm prune --production
 
-FROM node:lts-slim as prod
-
+FROM node:22-alpine
 WORKDIR /app
-
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/build ./build
-RUN npm install --production
-
-EXPOSE 8080
-ENTRYPOINT [ "npm", "run", "start" ]
+COPY --from=builder /app/build build/
+COPY --from=builder /app/node_modules node_modules/
+COPY package.json .
+EXPOSE 3000
+ENV NODE_ENV=production
+CMD [ "node", "build" ]
